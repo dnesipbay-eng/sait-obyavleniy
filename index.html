@@ -1,0 +1,1876 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Jarnama — частные объявления</title>
+
+  <style>
+    :root {
+      --green: #18a058;
+      --green-dark: #0d7a40;
+      --dark: #17202a;
+      --gray: #6b7280;
+      --light: #f5f6f8;
+      --white: #ffffff;
+      --border: #e5e7eb;
+      --red: #e5484d;
+      --shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--dark);
+      background: var(--light);
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      width: 100%;
+      display: block;
+    }
+
+    .container {
+      width: min(1150px, calc(100% - 32px));
+      margin: auto;
+    }
+
+    /* Шапка */
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: white;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      gap: 25px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 23px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: var(--green);
+      color: white;
+    }
+
+    .nav {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .nav a {
+      font-weight: 600;
+      color: #4b5563;
+    }
+
+    .nav a:hover {
+      color: var(--green);
+    }
+
+    .badge {
+      display: inline-grid;
+      place-items: center;
+      min-width: 21px;
+      height: 21px;
+      padding: 0 5px;
+      border-radius: 20px;
+      background: var(--green);
+      color: white;
+      font-size: 12px;
+    }
+
+    .menu-button {
+      display: none;
+      margin-left: auto;
+      border: none;
+      background: transparent;
+      font-size: 27px;
+    }
+
+    /* Кнопки */
+
+    .button {
+      min-height: 45px;
+      padding: 0 19px;
+      border: none;
+      border-radius: 12px;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button-green {
+      background: var(--green);
+      color: white;
+    }
+
+    .button-green:hover {
+      background: var(--green-dark);
+    }
+
+    .button-white {
+      background: white;
+      color: var(--dark);
+      border: 1px solid var(--border);
+    }
+
+    .button-full {
+      width: 100%;
+    }
+
+    /* Главная */
+
+    .hero {
+      padding: 75px 0;
+      background:
+        radial-gradient(circle at 85% 20%, rgba(24, 160, 88, 0.2), transparent 30%),
+        linear-gradient(135deg, #fff8ec, #eefaf3);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: center;
+      gap: 50px;
+    }
+
+    .hero h1 {
+      margin: 0 0 20px;
+      font-size: clamp(40px, 6vw, 68px);
+      line-height: 1.03;
+      letter-spacing: -2px;
+    }
+
+    .hero p {
+      max-width: 650px;
+      color: var(--gray);
+      font-size: 19px;
+      line-height: 1.7;
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .hero-image {
+      position: relative;
+      padding: 20px;
+      border-radius: 30px;
+      background: var(--dark);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-image img {
+      height: 370px;
+      object-fit: cover;
+      border-radius: 22px;
+    }
+
+    .hero-stat {
+      position: absolute;
+      bottom: 35px;
+      left: -25px;
+      padding: 18px 22px;
+      border-radius: 15px;
+      background: white;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-stat strong {
+      display: block;
+      color: var(--green);
+      font-size: 28px;
+    }
+
+    /* Общие секции */
+
+    .section {
+      padding: 65px 0;
+    }
+
+    .section-white {
+      background: white;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 20px;
+      margin-bottom: 28px;
+    }
+
+    .section-header h2 {
+      margin: 0;
+      font-size: 38px;
+    }
+
+    .section-header p {
+      margin: 8px 0 0;
+      color: var(--gray);
+    }
+
+    .section-link {
+      color: var(--green-dark);
+      font-weight: bold;
+    }
+
+    /* Категории */
+
+    .categories {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 15px;
+    }
+
+    .category {
+      padding: 22px 12px;
+      text-align: center;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: white;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .category:hover {
+      transform: translateY(-4px);
+      border-color: var(--green);
+      box-shadow: var(--shadow);
+    }
+
+    .category-icon {
+      margin-bottom: 10px;
+      font-size: 31px;
+    }
+
+    /* Карточки */
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .card {
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: white;
+      transition: 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow);
+    }
+
+    .card-image-wrapper {
+      position: relative;
+      height: 210px;
+      overflow: hidden;
+      background: #ddd;
+    }
+
+    .card-image {
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .favorite-button {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 41px;
+      height: 41px;
+      border: none;
+      border-radius: 50%;
+      background: white;
+      font-size: 22px;
+    }
+
+    .favorite-button.active {
+      color: var(--red);
+    }
+
+    .card-body {
+      padding: 17px;
+    }
+
+    .card-price {
+      color: var(--green-dark);
+      font-size: 21px;
+      font-weight: bold;
+    }
+
+    .card h3 {
+      min-height: 44px;
+      margin: 8px 0 12px;
+      font-size: 17px;
+      line-height: 1.35;
+    }
+
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--gray);
+      font-size: 13px;
+    }
+
+    .card-link {
+      display: block;
+      margin-top: 15px;
+      color: var(--green-dark);
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* Как работает */
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .step {
+      padding: 25px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: white;
+    }
+
+    .step-number {
+      width: 45px;
+      height: 45px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      background: #fff0d2;
+      color: #9d6811;
+      font-weight: bold;
+    }
+
+    /* Страница */
+
+    .page-title-section {
+      padding: 45px 0 25px;
+      background: white;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .page-title {
+      margin: 0;
+      font-size: 42px;
+    }
+
+    .search-box {
+      display: grid;
+      grid-template-columns: 1fr 220px auto;
+      gap: 12px;
+      margin-top: 27px;
+      padding: 15px;
+      border-radius: 18px;
+      background: white;
+      box-shadow: var(--shadow);
+    }
+
+    .input,
+    .select,
+    .textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: white;
+      outline: none;
+    }
+
+    .input,
+    .select {
+      height: 48px;
+      padding: 0 14px;
+    }
+
+    .textarea {
+      min-height: 150px;
+      padding: 14px;
+      resize: vertical;
+    }
+
+    .input:focus,
+    .select:focus,
+    .textarea:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(24, 160, 88, 0.12);
+    }
+
+    /* Каталог */
+
+    .catalog-layout {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 25px;
+    }
+
+    .filters {
+      height: fit-content;
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: white;
+    }
+
+    .filters h3 {
+      margin-top: 0;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .empty {
+      grid-column: 1 / -1;
+      padding: 45px;
+      text-align: center;
+      border: 1px dashed #bbb;
+      border-radius: 18px;
+      background: white;
+      color: var(--gray);
+    }
+
+    /* Страница объявления */
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 18px;
+      color: var(--green-dark);
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 30px;
+      align-items: start;
+    }
+
+    .detail-image,
+    .detail-panel,
+    .description-box,
+    .form-card {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: white;
+    }
+
+    .detail-image {
+      overflow: hidden;
+    }
+
+    .detail-image img {
+      height: 510px;
+      object-fit: cover;
+    }
+
+    .detail-panel {
+      padding: 25px;
+    }
+
+    .detail-price {
+      color: var(--green-dark);
+      font-size: 34px;
+      font-weight: bold;
+    }
+
+    .detail-panel h1 {
+      margin: 10px 0 16px;
+      font-size: 29px;
+    }
+
+    .seller {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      margin: 20px 0;
+      padding: 15px;
+      border-radius: 14px;
+      background: var(--light);
+    }
+
+    .seller-avatar {
+      width: 50px;
+      height: 50px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #425466;
+      color: white;
+      font-weight: bold;
+    }
+
+    .description-box {
+      margin-top: 22px;
+      padding: 24px;
+      line-height: 1.7;
+    }
+
+    /* Форма */
+
+    .form-card {
+      max-width: 780px;
+      margin: auto;
+      padding: 28px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .full-field {
+      grid-column: 1 / -1;
+    }
+
+    .form-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    /* Подвал */
+
+    .footer {
+      padding: 45px 0 20px;
+      background: var(--dark);
+      color: white;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 35px;
+    }
+
+    .footer p,
+    .footer a {
+      display: block;
+      color: #adb7c1;
+      line-height: 1.8;
+    }
+
+    .footer-bottom {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #34404b;
+      color: #8f9ba7;
+    }
+
+    /* Уведомление */
+
+    .toast {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 200;
+      padding: 14px 18px;
+      border-radius: 12px;
+      background: var(--dark);
+      color: white;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateY(15px);
+      transition: 0.3s;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 950px) {
+      .hero-grid,
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .categories {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .catalog-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .desktop-add {
+        display: none;
+      }
+
+      .menu-button {
+        display: block;
+      }
+
+      .nav {
+        display: none;
+        position: absolute;
+        top: 72px;
+        left: 16px;
+        right: 16px;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        background: white;
+        box-shadow: var(--shadow);
+      }
+
+      .nav.open {
+        display: flex;
+      }
+
+      .hero-image {
+        display: none;
+      }
+
+      .cards,
+      .categories,
+      .steps,
+      .footer-grid,
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .categories {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .search-box {
+        grid-template-columns: 1fr;
+      }
+
+      .full-field {
+        grid-column: auto;
+      }
+
+      .detail-image img {
+        height: 320px;
+      }
+
+      .section-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="header">
+  <div class="container header-inner">
+
+    <div class="logo" onclick="openPage('home')">
+      <span class="logo-icon">J</span>
+      <span>Jarnama</span>
+    </div>
+
+    <nav class="nav" id="navigation">
+      <a href="#" onclick="openPage('home')">Главная</a>
+      <a href="#" onclick="openPage('catalog')">Объявления</a>
+      <a href="#" onclick="openPage('favorites')">
+        Избранное
+        <span class="badge" id="favoriteCount">0</span>
+      </a>
+    </nav>
+
+    <button class="button button-green desktop-add" onclick="openPage('create')">
+      + Подать объявление
+    </button>
+
+    <button class="menu-button" onclick="toggleMenu()">☰</button>
+
+  </div>
+</header>
+
+<main id="app"></main>
+
+<footer class="footer">
+  <div class="container footer-grid">
+
+    <div>
+      <div class="logo">
+        <span class="logo-icon">J</span>
+        <span>Jarnama</span>
+      </div>
+
+      <p>
+        Простая онлайн-платформа частных объявлений.
+      </p>
+    </div>
+
+    <div>
+      <h3>Разделы</h3>
+      <a href="#" onclick="openPage('catalog')">Все объявления</a>
+      <a href="#" onclick="openPage('create')">Подать объявление</a>
+      <a href="#" onclick="openPage('favorites')">Избранное</a>
+    </div>
+
+    <div>
+      <h3>Контакты</h3>
+      <p>Алматы, Казахстан</p>
+      <p>info@jarnama.kz</p>
+    </div>
+
+  </div>
+
+  <div class="container footer-bottom">
+    © 2026 Jarnama. Учебный проект.
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const defaultAds = [
+    {
+      id: 1,
+      title: "iPhone 14 Pro 256 GB",
+      price: 385000,
+      category: "Электроника",
+      city: "Алматы",
+      date: "Сегодня, 14:20",
+      seller: "Алихан",
+      phone: "+7 777 123 45 67",
+      image: "https://images.unsplash.com/photo-1678685888221-cda773a3dcdb?auto=format&fit=crop&w=1000&q=80",
+      description: "Телефон в отличном состоянии. Память 256 GB, аккумулятор 91%. Полный комплект: коробка, кабель и документы."
+    },
+    {
+      id: 2,
+      title: "Диван для гостиной",
+      price: 145000,
+      category: "Дом и мебель",
+      city: "Астана",
+      date: "Сегодня, 12:10",
+      seller: "Диана",
+      phone: "+7 701 234 56 78",
+      image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1000&q=80",
+      description: "Мягкий и удобный диван. Использовался аккуратно, без повреждений."
+    },
+    {
+      id: 3,
+      title: "Toyota Camry 2017",
+      price: 10500000,
+      category: "Транспорт",
+      city: "Шымкент",
+      date: "Вчера, 19:45",
+      seller: "Руслан",
+      phone: "+7 705 345 67 89",
+      image: "https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?auto=format&fit=crop&w=1000&q=80",
+      description: "Автомобиль в хорошем состоянии. Двигатель 2.5, автомат, пробег 128 000 км."
+    },
+    {
+      id: 4,
+      title: "Ноутбук для учебы и работы",
+      price: 275000,
+      category: "Электроника",
+      city: "Алматы",
+      date: "Вчера, 16:30",
+      seller: "Мадина",
+      phone: "+7 747 456 78 90",
+      image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=1000&q=80",
+      description: "Intel Core i5, 16 GB RAM, SSD 512 GB. Подходит для учебы и работы."
+    },
+    {
+      id: 5,
+      title: "Горный велосипед",
+      price: 95000,
+      category: "Спорт",
+      city: "Караганда",
+      date: "2 дня назад",
+      seller: "Ержан",
+      phone: "+7 702 567 89 01",
+      image: "https://images.unsplash.com/photo-1576435728678-68d0fbf94e91?auto=format&fit=crop&w=1000&q=80",
+      description: "Горный велосипед, алюминиевая рама, 21 скорость."
+    },
+    {
+      id: 6,
+      title: "Кофемашина DeLonghi",
+      price: 120000,
+      category: "Бытовая техника",
+      city: "Алматы",
+      date: "3 дня назад",
+      seller: "Айгерим",
+      phone: "+7 778 678 90 12",
+      image: "https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6?auto=format&fit=crop&w=1000&q=80",
+      description: "Автоматическая кофемашина. Полностью исправна."
+    },
+    {
+      id: 7,
+      title: "Щенок корги",
+      price: 180000,
+      category: "Животные",
+      city: "Астана",
+      date: "4 дня назад",
+      seller: "Асем",
+      phone: "+7 707 789 01 23",
+      image: "https://images.unsplash.com/photo-1612536057832-2ff7ead58194?auto=format&fit=crop&w=1000&q=80",
+      description: "Щенок корги, 3 месяца. Есть ветеринарный паспорт."
+    },
+    {
+      id: 8,
+      title: "Ремонт квартир под ключ",
+      price: 5000,
+      category: "Услуги",
+      city: "Алматы",
+      date: "5 дней назад",
+      seller: "Нурлан",
+      phone: "+7 700 890 12 34",
+      image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1000&q=80",
+      description: "Ремонт квартир, домов и офисов. Цена указана за квадратный метр."
+    }
+  ];
+
+  const categories = [
+    ["📱", "Электроника"],
+    ["🚗", "Транспорт"],
+    ["🏠", "Недвижимость"],
+    ["🛋️", "Дом и мебель"],
+    ["👕", "Одежда"],
+    ["🐶", "Животные"],
+    ["🛠️", "Услуги"],
+    ["⚽", "Спорт"],
+    ["☕", "Бытовая техника"]
+  ];
+
+  const app = document.getElementById("app");
+  const toast = document.getElementById("toast");
+
+  function getCustomAds() {
+    return JSON.parse(localStorage.getItem("customAds") || "[]");
+  }
+
+  function getAllAds() {
+    return [...getCustomAds(), ...defaultAds];
+  }
+
+  function getFavorites() {
+    return JSON.parse(localStorage.getItem("favorites") || "[]");
+  }
+
+  function saveFavorites(favorites) {
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+    updateFavoriteCount();
+  }
+
+  function updateFavoriteCount() {
+    document.getElementById("favoriteCount").textContent =
+      getFavorites().length;
+  }
+
+  function formatPrice(price) {
+    return new Intl.NumberFormat("ru-RU").format(price) + " ₸";
+  }
+
+  function showToast(text) {
+    toast.textContent = text;
+    toast.classList.add("show");
+
+    setTimeout(() => {
+      toast.classList.remove("show");
+    }, 2200);
+  }
+
+  function toggleMenu() {
+    document.getElementById("navigation").classList.toggle("open");
+  }
+
+  function openPage(page, id = null, category = "") {
+    document.getElementById("navigation").classList.remove("open");
+
+    if (page === "home") {
+      showHome();
+    }
+
+    if (page === "catalog") {
+      showCatalog(category);
+    }
+
+    if (page === "details") {
+      showDetails(id);
+    }
+
+    if (page === "create") {
+      showCreateForm();
+    }
+
+    if (page === "favorites") {
+      showFavorites();
+    }
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
+
+  function toggleFavorite(id) {
+    let favorites = getFavorites();
+
+    if (favorites.includes(id)) {
+      favorites = favorites.filter(item => item !== id);
+      showToast("Удалено из избранного");
+    } else {
+      favorites.push(id);
+      showToast("Добавлено в избранное");
+    }
+
+    saveFavorites(favorites);
+
+    const currentPage = document.body.dataset.page;
+
+    if (currentPage === "favorites") {
+      showFavorites();
+    } else if (currentPage === "details") {
+      showDetails(id);
+    } else if (currentPage === "catalog") {
+      applyFilters();
+    } else {
+      showHome();
+    }
+  }
+
+  function createCard(ad) {
+    const favorite = getFavorites().includes(ad.id);
+
+    return `
+      <article class="card">
+
+        <div class="card-image-wrapper">
+
+          <img
+            class="card-image"
+            src="${ad.image}"
+            alt="${ad.title}"
+          >
+
+          <button
+            class="favorite-button ${favorite ? "active" : ""}"
+            onclick="toggleFavorite(${ad.id})"
+          >
+            ${favorite ? "♥" : "♡"}
+          </button>
+
+        </div>
+
+        <div class="card-body">
+
+          <div class="card-price">
+            ${formatPrice(ad.price)}
+          </div>
+
+          <h3>${ad.title}</h3>
+
+          <div class="meta">
+            <span>📍 ${ad.city}</span>
+            <span>${ad.date}</span>
+          </div>
+
+          <span
+            class="card-link"
+            onclick="openPage('details', ${ad.id})"
+          >
+            Посмотреть объявление →
+          </span>
+
+        </div>
+
+      </article>
+    `;
+  }
+
+  function showHome() {
+    document.body.dataset.page = "home";
+
+    const categoryHtml = categories.slice(0, 6).map(category => `
+      <div
+        class="category"
+        onclick="openPage('catalog', null, '${category[1]}')"
+      >
+        <div class="category-icon">${category[0]}</div>
+        <strong>${category[1]}</strong>
+      </div>
+    `).join("");
+
+    const cardsHtml = getAllAds()
+      .slice(0, 4)
+      .map(createCard)
+      .join("");
+
+    app.innerHTML = `
+      <section class="hero">
+
+        <div class="container hero-grid">
+
+          <div>
+
+            <h1>
+              Покупайте и продавайте легко
+            </h1>
+
+            <p>
+              Jarnama — простая онлайн-платформа частных объявлений.
+              Находите нужные товары или публикуйте собственное
+              объявление за несколько минут.
+            </p>
+
+            <div class="hero-buttons">
+
+              <button
+                class="button button-green"
+                onclick="openPage('catalog')"
+              >
+                Смотреть объявления
+              </button>
+
+              <button
+                class="button button-white"
+                onclick="openPage('create')"
+              >
+                Подать объявление
+              </button>
+
+            </div>
+
+          </div>
+
+          <div class="hero-image">
+
+            <img
+              src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1000&q=80"
+              alt="Онлайн покупки"
+            >
+
+            <div class="hero-stat">
+              <strong>${getAllAds().length}+</strong>
+              активных объявлений
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <section class="section section-white">
+
+        <div class="container">
+
+          <div class="section-header">
+
+            <div>
+              <h2>Популярные категории</h2>
+              <p>Выберите необходимый раздел</p>
+            </div>
+
+            <span
+              class="section-link"
+              onclick="openPage('catalog')"
+            >
+              Все категории →
+            </span>
+
+          </div>
+
+          <div class="categories">
+            ${categoryHtml}
+          </div>
+
+        </div>
+
+      </section>
+
+      <section class="section">
+
+        <div class="container">
+
+          <div class="section-header">
+
+            <div>
+              <h2>Свежие объявления</h2>
+              <p>Новые предложения пользователей</p>
+            </div>
+
+            <span
+              class="section-link"
+              onclick="openPage('catalog')"
+            >
+              Смотреть все →
+            </span>
+
+          </div>
+
+          <div class="cards">
+            ${cardsHtml}
+          </div>
+
+        </div>
+
+      </section>
+
+      <section class="section section-white">
+
+        <div class="container">
+
+          <div class="section-header">
+            <div>
+              <h2>Как это работает</h2>
+              <p>Всего три простых шага</p>
+            </div>
+          </div>
+
+          <div class="steps">
+
+            <div class="step">
+              <div class="step-number">1</div>
+              <h3>Найдите товар</h3>
+              <p>Используйте поиск, категории и фильтры.</p>
+            </div>
+
+            <div class="step">
+              <div class="step-number">2</div>
+              <h3>Откройте объявление</h3>
+              <p>Посмотрите описание, цену и контакты продавца.</p>
+            </div>
+
+            <div class="step">
+              <div class="step-number">3</div>
+              <h3>Свяжитесь с продавцом</h3>
+              <p>Позвоните продавцу и договоритесь о покупке.</p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+    `;
+
+    updateFavoriteCount();
+  }
+
+  function showCatalog(selectedCategory = "") {
+    document.body.dataset.page = "catalog";
+
+    const categoryOptions = [
+      "Все категории",
+      ...categories.map(item => item[1])
+    ].map(category => `
+      <option
+        value="${category}"
+        ${category === selectedCategory ? "selected" : ""}
+      >
+        ${category}
+      </option>
+    `).join("");
+
+    app.innerHTML = `
+      <section class="page-title-section">
+
+        <div class="container">
+
+          <h1 class="page-title">
+            Все объявления
+          </h1>
+
+          <div class="search-box">
+
+            <input
+              class="input"
+              id="searchInput"
+              placeholder="Что вы ищете?"
+            >
+
+            <select
+              class="select"
+              id="categoryFilter"
+            >
+              ${categoryOptions}
+            </select>
+
+            <button
+              class="button button-green"
+              onclick="applyFilters()"
+            >
+              Найти
+            </button>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <section class="section">
+
+        <div class="container catalog-layout">
+
+          <aside class="filters">
+
+            <h3>Фильтры</h3>
+
+            <div class="field">
+
+              <label>Город</label>
+
+              <select
+                class="select"
+                id="cityFilter"
+              >
+                <option>Все города</option>
+                <option>Алматы</option>
+                <option>Астана</option>
+                <option>Шымкент</option>
+                <option>Караганда</option>
+              </select>
+
+            </div>
+
+            <div class="field">
+
+              <label>Цена до</label>
+
+              <input
+                class="input"
+                id="priceFilter"
+                type="number"
+                placeholder="Например, 300000"
+              >
+
+            </div>
+
+            <button
+              class="button button-green button-full"
+              onclick="applyFilters()"
+            >
+              Применить
+            </button>
+
+            <button
+              class="button button-white button-full"
+              style="margin-top: 10px"
+              onclick="resetFilters()"
+            >
+              Сбросить
+            </button>
+
+          </aside>
+
+          <div>
+
+            <div class="section-header">
+
+              <div>
+                <h2>Найденные объявления</h2>
+                <p id="resultCount"></p>
+              </div>
+
+            </div>
+
+            <div
+              class="cards"
+              id="catalogCards"
+            ></div>
+
+          </div>
+
+        </div>
+
+      </section>
+    `;
+
+    document.getElementById("searchInput")
+      .addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+          applyFilters();
+        }
+      });
+
+    applyFilters();
+  }
+
+  function applyFilters() {
+    let ads = getAllAds();
+
+    const searchInput =
+      document.getElementById("searchInput");
+
+    const categoryFilter =
+      document.getElementById("categoryFilter");
+
+    const cityFilter =
+      document.getElementById("cityFilter");
+
+    const priceFilter =
+      document.getElementById("priceFilter");
+
+    const searchText =
+      searchInput ? searchInput.value.trim().toLowerCase() : "";
+
+    const category =
+      categoryFilter ? categoryFilter.value : "Все категории";
+
+    const city =
+      cityFilter ? cityFilter.value : "Все города";
+
+    const maxPrice =
+      priceFilter ? Number(priceFilter.value) : 0;
+
+    if (searchText) {
+      ads = ads.filter(ad =>
+        ad.title.toLowerCase().includes(searchText) ||
+        ad.description.toLowerCase().includes(searchText)
+      );
+    }
+
+    if (category !== "Все категории") {
+      ads = ads.filter(ad =>
+        ad.category === category
+      );
+    }
+
+    if (city !== "Все города") {
+      ads = ads.filter(ad =>
+        ad.city === city
+      );
+    }
+
+    if (maxPrice > 0) {
+      ads = ads.filter(ad =>
+        ad.price <= maxPrice
+      );
+    }
+
+    document.getElementById("resultCount").textContent =
+      ads.length + " объявлений";
+
+    document.getElementById("catalogCards").innerHTML =
+      ads.length
+        ? ads.map(createCard).join("")
+        : `
+          <div class="empty">
+            <h3>Ничего не найдено</h3>
+            <p>Попробуйте изменить параметры поиска.</p>
+          </div>
+        `;
+
+    updateFavoriteCount();
+  }
+
+  function resetFilters() {
+    document.getElementById("searchInput").value = "";
+    document.getElementById("categoryFilter").value =
+      "Все категории";
+    document.getElementById("cityFilter").value =
+      "Все города";
+    document.getElementById("priceFilter").value = "";
+
+    applyFilters();
+  }
+
+  function showDetails(id) {
+    document.body.dataset.page = "details";
+
+    const ad = getAllAds().find(item =>
+      item.id === Number(id)
+    );
+
+    if (!ad) {
+      app.innerHTML = `
+        <section class="section">
+          <div class="container">
+            <div class="empty">
+              <h2>Объявление не найдено</h2>
+              <button
+                class="button button-green"
+                onclick="openPage('catalog')"
+              >
+                Вернуться в каталог
+              </button>
+            </div>
+          </div>
+        </section>
+      `;
+      return;
+    }
+
+    const favorite = getFavorites().includes(ad.id);
+
+    app.innerHTML = `
+      <section class="section">
+
+        <div class="container">
+
+          <span
+            class="back-link"
+            onclick="openPage('catalog')"
+          >
+            ← Вернуться к объявлениям
+          </span>
+
+          <div class="detail-grid">
+
+            <div>
+
+              <div class="detail-image">
+                <img
+                  src="${ad.image}"
+                  alt="${ad.title}"
+                >
+              </div>
+
+              <div class="description-box">
+
+                <h2>Описание</h2>
+
+                <p>${ad.description}</p>
+
+                <p>
+                  <strong>Категория:</strong>
+                  ${ad.category}
+                </p>
+
+                <p>
+                  <strong>Город:</strong>
+                  ${ad.city}
+                </p>
+
+                <p>
+                  <strong>Опубликовано:</strong>
+                  ${ad.date}
+                </p>
+
+              </div>
+
+            </div>
+
+            <aside class="detail-panel">
+
+              <div class="detail-price">
+                ${formatPrice(ad.price)}
+              </div>
+
+              <h1>${ad.title}</h1>
+
+              <div class="meta">
+                <span>📍 ${ad.city}</span>
+                <span>${ad.date}</span>
+              </div>
+
+              <div class="seller">
+
+                <div class="seller-avatar">
+                  ${ad.seller.charAt(0)}
+                </div>
+
+                <div>
+                  <strong>${ad.seller}</strong>
+                  <br>
+                  <span class="meta">
+                    Частное лицо
+                  </span>
+                </div>
+
+              </div>
+
+              <button
+                class="button button-green button-full"
+                id="phoneButton"
+                onclick="showPhone('${ad.phone}')"
+              >
+                Показать телефон
+              </button>
+
+              <button
+                class="button button-white button-full"
+                style="margin-top: 10px"
+                onclick="toggleFavorite(${ad.id})"
+              >
+                ${favorite
+                  ? "♥ Удалить из избранного"
+                  : "♡ Добавить в избранное"
+                }
+              </button>
+
+            </aside>
+
+          </div>
+
+        </div>
+
+      </section>
+    `;
+
+    updateFavoriteCount();
+  }
+
+  function showPhone(phone) {
+    const button =
+      document.getElementById("phoneButton");
+
+    button.textContent = phone;
+
+    button.onclick = function() {
+      window.location.href =
+        "tel:" + phone.replaceAll(" ", "");
+    };
+  }
+
+  function showCreateForm() {
+    document.body.dataset.page = "create";
+
+    const categoryOptions = categories.map(category => `
+      <option value="${category[1]}">
+        ${category[1]}
+      </option>
+    `).join("");
+
+    app.innerHTML = `
+      <section class="page-title-section">
+
+        <div class="container">
+
+          <h1 class="page-title">
+            Подать объявление
+          </h1>
+
+          <p>
+            Заполните форму, чтобы опубликовать товар или услугу.
+          </p>
+
+        </div>
+
+      </section>
+
+      <section class="section">
+
+        <div class="container">
+
+          <form
+            class="form-card"
+            id="createForm"
+          >
+
+            <div class="form-grid">
+
+              <div class="field full-field">
+
+                <label>Название объявления</label>
+
+                <input
+                  class="input"
+                  name="title"
+                  required
+                  placeholder="Например, продам ноутбук"
+                >
+
+              </div>
+
+              <div class="field">
+
+                <label>Цена, ₸</label>
+
+                <input
+                  class="input"
+                  name="price"
+                  type="number"
+                  min="0"
+                  required
+                >
+
+              </div>
+
+              <div class="field">
+
+                <label>Категория</label>
+
+                <select
+                  class="select"
+                  name="category"
+                >
+                  ${categoryOptions}
+                </select>
+
+              </div>
+
+              <div class="field">
+
+                <label>Город</label>
+
+                <select
+                  class="select"
+                  name="city"
+                >
+                  <option>Алматы</option>
+                  <option>Астана</option>
+                  <option>Шымкент</option>
+                  <option>Караганда</option>
+                </select>
+
+              </div>
+
+              <div class="field">
+
+                <label>Ваше имя</label>
+
+                <input
+                  class="input"
+                  name="seller"
+                  required
+                >
+
+              </div>
+
+              <div class="field">
+
+                <label>Телефон</label>
+
+                <input
+                  class="input"
+                  name="phone"
+                  required
+                  placeholder="+7 777 000 00 00"
+                >
+
+              </div>
+
+              <div class="field full-field">
+
+                <label>Ссылка на изображение</label>
+
+                <input
+                  class="input"
+                  name="image"
+                  type="url"
+                  placeholder="https://..."
+                >
+
+              </div>
+
+              <div class="field full-field">
+
+                <label>Описание</label>
+
+                <textarea
+                  class="textarea"
+                  name="description"
+                  required
+                  placeholder="Опишите товар, состояние и другие детали"
+                ></textarea>
+
+              </div>
+
+            </div>
+
+            <div class="form-buttons">
+
+              <button
+                class="button button-white"
+                type="button"
+                onclick="openPage('home')"
+              >
+                Отмена
+              </button>
+
+              <button
+                class="button button-green"
+                type="submit"
+              >
+                Опубликовать
+              </button>
+
+            </div>
+
+          </form>
+
+        </div>
+
+      </section>
+    `;
+
+    document.getElementById("createForm")
+      .addEventListener("submit", createAdvertisement);
+  }
+
+  function createAdvertisement(event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+
+    const customAds = getCustomAds();
+
+    const newAd = {
+      id: Date.now(),
+      title: formData.get("title"),
+      price: Number(formData.get("price")),
+      category: formData.get("category"),
+      city: formData.get("city"),
+      seller: formData.get("seller"),
+      phone: formData.get("phone"),
+      image:
+        formData.get("image") ||
+        "https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=1000&q=80",
+      description: formData.get("description"),
+      date: "Только что"
+    };
+
+    customAds.unshift(newAd);
+
+    localStorage.setItem(
+      "customAds",
+      JSON.stringify(customAds)
+    );
+
+    showToast("Объявление опубликовано");
+
+    openPage("details", newAd.id);
+  }
+
+  function showFavorites() {
+    document.body.dataset.page = "favorites";
+
+    const favoriteIds = getFavorites();
+
+    const favoriteAds = getAllAds().filter(ad =>
+      favoriteIds.includes(ad.id)
+    );
+
+    app.innerHTML = `
+      <section class="page-title-section">
+
+        <div class="container">
+
+          <h1 class="page-title">
+            Избранные объявления
+          </h1>
+
+          <p>
+            Сохранённые вами предложения.
+          </p>
+
+        </div>
+
+      </section>
+
+      <section class="section">
+
+        <div class="container">
+
+          <div class="cards">
+
+            ${
+              favoriteAds.length
+                ? favoriteAds.map(createCard).join("")
+                : `
+                  <div class="empty">
+
+                    <h3>В избранном пока пусто</h3>
+
+                    <p>
+                      Нажмите на сердечко в карточке объявления.
+                    </p>
+
+                    <button
+                      class="button button-green"
+                      onclick="openPage('catalog')"
+                    >
+                      Перейти в каталог
+                    </button>
+
+                  </div>
+                `
+            }
+
+          </div>
+
+        </div>
+
+      </section>
+    `;
+
+    updateFavoriteCount();
+  }
+
+  showHome();
+</script>
+
+</body>
+</html>
