@@ -1874,3 +1874,1248 @@
 
 </body>
 </html>
+
+<style>
+  /* Окно входа и регистрации */
+  .login-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #10271b, #1e5838);
+  }
+
+  .login-overlay.hidden {
+    display: none;
+  }
+
+  .login-card {
+    width: 100%;
+    max-width: 440px;
+    padding: 30px;
+    border-radius: 22px;
+    background: white;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  }
+
+  .login-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 25px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .login-logo-icon {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    color: white;
+    background: #18a058;
+  }
+
+  .login-card h2 {
+    margin: 0 0 8px;
+  }
+
+  .login-card p {
+    color: #6b7280;
+  }
+
+  .login-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 22px 0;
+  }
+
+  .login-tab {
+    height: 44px;
+    border: 1px solid #e5e7eb;
+    border-radius: 11px;
+    background: white;
+    font-weight: bold;
+  }
+
+  .login-tab.active {
+    border-color: #18a058;
+    color: white;
+    background: #18a058;
+  }
+
+  .login-field {
+    margin-bottom: 15px;
+  }
+
+  .login-field label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .login-field input {
+    width: 100%;
+    height: 48px;
+    padding: 0 14px;
+    border: 1px solid #e5e7eb;
+    border-radius: 11px;
+    outline: none;
+  }
+
+  .login-field input:focus {
+    border-color: #18a058;
+  }
+
+  .login-error {
+    min-height: 22px;
+    margin-bottom: 8px;
+    color: #dc3545;
+    font-size: 14px;
+  }
+
+  .login-hidden {
+    display: none;
+  }
+
+  .login-submit {
+    width: 100%;
+    height: 48px;
+    border: none;
+    border-radius: 11px;
+    color: white;
+    background: #18a058;
+    font-weight: bold;
+  }
+
+  .login-submit:hover {
+    background: #0f7f43;
+  }
+
+  .admin-info {
+    margin-top: 18px;
+    padding: 12px;
+    border-radius: 11px;
+    background: #f5f6f8;
+    font-size: 13px;
+  }
+
+  /* Информация об аккаунте в шапке */
+  .account-header {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+
+  .account-avatar {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    color: white;
+    background: #425466;
+    font-weight: bold;
+  }
+
+  .account-name {
+    font-weight: bold;
+  }
+
+  .logout-button {
+    min-height: 39px;
+    padding: 0 13px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    background: white;
+    font-weight: bold;
+  }
+
+  /* Админ-панель */
+  .admin-statistics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 35px;
+  }
+
+  .admin-stat {
+    padding: 25px;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    background: white;
+  }
+
+  .admin-stat strong {
+    display: block;
+    margin-bottom: 7px;
+    color: #0f7f43;
+    font-size: 38px;
+  }
+
+  .admin-table-wrapper {
+    overflow-x: auto;
+    margin-bottom: 35px;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    background: white;
+  }
+
+  .admin-table {
+    width: 100%;
+    min-width: 750px;
+    border-collapse: collapse;
+  }
+
+  .admin-table th,
+  .admin-table td {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .admin-table th {
+    background: #f5f6f8;
+  }
+
+  .admin-delete {
+    min-height: 36px;
+    padding: 0 12px;
+    border: none;
+    border-radius: 9px;
+    color: white;
+    background: #dc3545;
+  }
+
+  .admin-open {
+    min-height: 36px;
+    padding: 0 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 9px;
+    background: white;
+  }
+
+  .profile-block {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    padding: 22px;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    background: white;
+  }
+
+  .profile-avatar {
+    width: 65px;
+    height: 65px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    color: white;
+    background: #18a058;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  @media (max-width: 800px) {
+    .admin-statistics {
+      grid-template-columns: 1fr;
+    }
+
+    .account-name {
+      display: none;
+    }
+  }
+</style>
+
+<!-- Обязательное окно входа -->
+<div class="login-overlay" id="loginOverlay">
+
+  <div class="login-card">
+
+    <div class="login-logo">
+      <span class="login-logo-icon">J</span>
+      <span>Jarnama</span>
+    </div>
+
+    <h2 id="loginTitle">Вход на сайт</h2>
+
+    <p>
+      Для использования сайта необходимо войти или
+      зарегистрироваться.
+    </p>
+
+    <div class="login-tabs">
+
+      <button
+        class="login-tab active"
+        id="loginTab"
+        type="button"
+        onclick="changeLoginMode('login')"
+      >
+        Войти
+      </button>
+
+      <button
+        class="login-tab"
+        id="registerTab"
+        type="button"
+        onclick="changeLoginMode('register')"
+      >
+        Регистрация
+      </button>
+
+    </div>
+
+    <div class="login-error" id="loginError"></div>
+
+    <form id="loginForm">
+
+      <div
+        class="login-field login-hidden"
+        id="registerNameField"
+      >
+        <label>Ваше имя</label>
+
+        <input
+          id="registerName"
+          placeholder="Например, Данияр"
+        >
+      </div>
+
+      <div class="login-field">
+
+        <label>Логин</label>
+
+        <input
+          id="loginInput"
+          required
+          placeholder="Введите логин"
+        >
+
+      </div>
+
+      <div class="login-field">
+
+        <label>Пароль</label>
+
+        <input
+          id="passwordInput"
+          type="password"
+          required
+          placeholder="Введите пароль"
+        >
+
+      </div>
+
+      <button
+        class="login-submit"
+        type="submit"
+      >
+        Продолжить
+      </button>
+
+    </form>
+
+    <div class="admin-info">
+      <strong>Вход администратора</strong><br>
+      Логин: <b>admin</b><br>
+      Пароль: <b>1234</b>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  let loginMode = "login";
+
+  let currentSiteUser = JSON.parse(
+    sessionStorage.getItem("jarnamaCurrentUser") || "null"
+  );
+
+  /*
+    Получение зарегистрированных пользователей
+  */
+  function getRegisteredUsers() {
+    return JSON.parse(
+      localStorage.getItem("jarnamaUsers") || "[]"
+    );
+  }
+
+  /*
+    Сохранение пользователей
+  */
+  function saveRegisteredUsers(users) {
+    localStorage.setItem(
+      "jarnamaUsers",
+      JSON.stringify(users)
+    );
+  }
+
+  /*
+    Переключение между входом и регистрацией
+  */
+  function changeLoginMode(mode) {
+    loginMode = mode;
+
+    document
+      .getElementById("loginTab")
+      .classList.toggle("active", mode === "login");
+
+    document
+      .getElementById("registerTab")
+      .classList.toggle("active", mode === "register");
+
+    document
+      .getElementById("registerNameField")
+      .classList.toggle("login-hidden", mode !== "register");
+
+    document.getElementById("loginTitle").textContent =
+      mode === "login"
+        ? "Вход на сайт"
+        : "Создание аккаунта";
+
+    document.getElementById("loginError").textContent = "";
+  }
+
+  /*
+    Обработка входа и регистрации
+  */
+  document
+    .getElementById("loginForm")
+    .addEventListener("submit", function(event) {
+
+      event.preventDefault();
+
+      const name =
+        document
+          .getElementById("registerName")
+          .value
+          .trim();
+
+      const login =
+        document
+          .getElementById("loginInput")
+          .value
+          .trim();
+
+      const password =
+        document
+          .getElementById("passwordInput")
+          .value;
+
+      const error =
+        document.getElementById("loginError");
+
+      /*
+        Вход
+      */
+      if (loginMode === "login") {
+
+        /*
+          Проверяем администратора
+        */
+        if (
+          login === "admin" &&
+          password === "1234"
+        ) {
+          enterSite({
+            name: "Администратор",
+            login: "admin",
+            role: "admin"
+          });
+
+          return;
+        }
+
+        /*
+          Проверяем обычного пользователя
+        */
+        const users = getRegisteredUsers();
+
+        const foundUser = users.find(function(user) {
+          return (
+            user.login === login &&
+            user.password === password
+          );
+        });
+
+        if (!foundUser) {
+          error.textContent =
+            "Неправильный логин или пароль.";
+
+          return;
+        }
+
+        enterSite({
+          name: foundUser.name,
+          login: foundUser.login,
+          role: "user"
+        });
+
+        return;
+      }
+
+      /*
+        Регистрация
+      */
+      if (!name) {
+        error.textContent = "Введите ваше имя.";
+        return;
+      }
+
+      if (login.length < 3) {
+        error.textContent =
+          "Логин должен содержать минимум 3 символа.";
+
+        return;
+      }
+
+      if (password.length < 4) {
+        error.textContent =
+          "Пароль должен содержать минимум 4 символа.";
+
+        return;
+      }
+
+      if (login.toLowerCase() === "admin") {
+        error.textContent =
+          "Логин admin использовать нельзя.";
+
+        return;
+      }
+
+      const users = getRegisteredUsers();
+
+      const loginExists = users.some(function(user) {
+        return user.login === login;
+      });
+
+      if (loginExists) {
+        error.textContent =
+          "Пользователь с таким логином уже существует.";
+
+        return;
+      }
+
+      const newUser = {
+        id: Date.now(),
+        name: name,
+        login: login,
+        password: password,
+        registeredAt:
+          new Date().toLocaleString("ru-RU")
+      };
+
+      users.push(newUser);
+
+      saveRegisteredUsers(users);
+
+      enterSite({
+        name: newUser.name,
+        login: newUser.login,
+        role: "user"
+      });
+    });
+
+  /*
+    Вход на сайт
+  */
+  function enterSite(user) {
+    currentSiteUser = user;
+
+    sessionStorage.setItem(
+      "jarnamaCurrentUser",
+      JSON.stringify(user)
+    );
+
+    document
+      .getElementById("loginOverlay")
+      .classList.add("hidden");
+
+    updateSiteHeader();
+
+    if (user.role === "admin") {
+      showAdminPanel();
+    } else {
+      showHome();
+    }
+
+    showToast(
+      "Вы вошли как " + user.name
+    );
+  }
+
+  /*
+    Выход из аккаунта
+  */
+  function logoutFromSite() {
+    currentSiteUser = null;
+
+    sessionStorage.removeItem(
+      "jarnamaCurrentUser"
+    );
+
+    document
+      .getElementById("loginForm")
+      .reset();
+
+    changeLoginMode("login");
+
+    document
+      .getElementById("loginOverlay")
+      .classList.remove("hidden");
+  }
+
+  /*
+    Добавляем аккаунт и админ-панель в шапку
+  */
+  function updateSiteHeader() {
+    if (!currentSiteUser) {
+      return;
+    }
+
+    const header =
+      document.querySelector(".header-inner");
+
+    if (!header) {
+      return;
+    }
+
+    const oldAccount =
+      document.getElementById("accountHeader");
+
+    if (oldAccount) {
+      oldAccount.remove();
+    }
+
+    const accountBox =
+      document.createElement("div");
+
+    accountBox.id = "accountHeader";
+    accountBox.className = "account-header";
+
+    accountBox.innerHTML = `
+      <div class="account-avatar">
+        ${escapeUserText(
+          currentSiteUser.name.charAt(0).toUpperCase()
+        )}
+      </div>
+
+      <span
+        class="account-name"
+        onclick="showMyAccount()"
+        style="cursor:pointer"
+      >
+        ${escapeUserText(currentSiteUser.name)}
+      </span>
+
+      <button
+        class="logout-button"
+        onclick="logoutFromSite()"
+      >
+        Выйти
+      </button>
+    `;
+
+    header.appendChild(accountBox);
+
+    const nav =
+      document.getElementById("navigation");
+
+    if (nav) {
+      const oldProfile =
+        document.getElementById("profileNavigation");
+
+      const oldAdmin =
+        document.getElementById("adminNavigation");
+
+      if (oldProfile) {
+        oldProfile.remove();
+      }
+
+      if (oldAdmin) {
+        oldAdmin.remove();
+      }
+
+      if (currentSiteUser.role === "user") {
+        const profileLink =
+          document.createElement("a");
+
+        profileLink.id = "profileNavigation";
+        profileLink.href = "#";
+        profileLink.textContent = "Мой аккаунт";
+
+        profileLink.onclick = function(event) {
+          event.preventDefault();
+          showMyAccount();
+        };
+
+        nav.appendChild(profileLink);
+      }
+
+      if (currentSiteUser.role === "admin") {
+        const adminLink =
+          document.createElement("a");
+
+        adminLink.id = "adminNavigation";
+        adminLink.href = "#";
+        adminLink.textContent = "Админ-панель";
+
+        adminLink.onclick = function(event) {
+          event.preventDefault();
+          showAdminPanel();
+        };
+
+        nav.appendChild(adminLink);
+      }
+    }
+  }
+
+  /*
+    Защищаем переходы между страницами
+  */
+  const originalOpenPage = openPage;
+
+  openPage = function(page, id, category) {
+    if (!currentSiteUser) {
+      document
+        .getElementById("loginOverlay")
+        .classList.remove("hidden");
+
+      return;
+    }
+
+    if (
+      currentSiteUser.role === "admin" &&
+      page === "home"
+    ) {
+      showAdminPanel();
+      return;
+    }
+
+    originalOpenPage(page, id, category);
+  };
+
+  /*
+    Новая функция публикации объявления.
+    Теперь объявление получает имя и логин автора.
+  */
+  createAdvertisement = function(event) {
+    event.preventDefault();
+
+    if (!currentSiteUser) {
+      return;
+    }
+
+    const formData =
+      new FormData(event.target);
+
+    const customAds =
+      getCustomAds();
+
+    const newAd = {
+      id: Date.now(),
+
+      title:
+        formData.get("title"),
+
+      price:
+        Number(formData.get("price")),
+
+      category:
+        formData.get("category"),
+
+      city:
+        formData.get("city"),
+
+      seller:
+        currentSiteUser.name,
+
+      ownerName:
+        currentSiteUser.name,
+
+      ownerLogin:
+        currentSiteUser.login,
+
+      phone:
+        formData.get("phone"),
+
+      image:
+        formData.get("image") ||
+        "https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=1000&q=80",
+
+      description:
+        formData.get("description"),
+
+      date: "Только что"
+    };
+
+    customAds.unshift(newAd);
+
+    localStorage.setItem(
+      "customAds",
+      JSON.stringify(customAds)
+    );
+
+    showToast("Объявление опубликовано");
+
+    openPage("details", newAd.id);
+  };
+
+  /*
+    Личный аккаунт пользователя
+  */
+  function showMyAccount() {
+    if (!currentSiteUser) {
+      return;
+    }
+
+    if (currentSiteUser.role === "admin") {
+      showAdminPanel();
+      return;
+    }
+
+    document.body.dataset.page = "account";
+
+    const myAds =
+      getCustomAds().filter(function(ad) {
+        return ad.ownerLogin === currentSiteUser.login;
+      });
+
+    app.innerHTML = `
+      <section class="page-title-section">
+
+        <div class="container">
+
+          <h1 class="page-title">
+            Мой аккаунт
+          </h1>
+
+          <p>
+            Управление профилем и объявлениями
+          </p>
+
+        </div>
+
+      </section>
+
+      <section class="section">
+
+        <div class="container">
+
+          <div class="profile-block">
+
+            <div class="profile-avatar">
+              ${escapeUserText(
+                currentSiteUser.name.charAt(0).toUpperCase()
+              )}
+            </div>
+
+            <div>
+
+              <h2 style="margin:0 0 6px">
+                ${escapeUserText(currentSiteUser.name)}
+              </h2>
+
+              <div style="color:#6b7280">
+                Логин:
+                @${escapeUserText(currentSiteUser.login)}
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="section-header">
+
+            <div>
+
+              <h2>Мои объявления</h2>
+
+              <p>
+                Всего объявлений: ${myAds.length}
+              </p>
+
+            </div>
+
+            <button
+              class="button button-green"
+              onclick="openPage('create')"
+            >
+              + Добавить объявление
+            </button>
+
+          </div>
+
+          <div class="cards">
+
+            ${
+              myAds.length
+                ? myAds.map(createCard).join("")
+                : `
+                  <div class="empty">
+
+                    <h3>
+                      Вы ещё не добавили объявления
+                    </h3>
+
+                    <p>
+                      Создайте своё первое объявление.
+                    </p>
+
+                    <button
+                      class="button button-green"
+                      onclick="openPage('create')"
+                    >
+                      Создать объявление
+                    </button>
+
+                  </div>
+                `
+            }
+
+          </div>
+
+        </div>
+
+      </section>
+    `;
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
+
+  /*
+    Админ-панель
+  */
+  function showAdminPanel() {
+    if (
+      !currentSiteUser ||
+      currentSiteUser.role !== "admin"
+    ) {
+      return;
+    }
+
+    document.body.dataset.page = "admin";
+
+    const users =
+      getRegisteredUsers();
+
+    const userAds =
+      getCustomAds();
+
+    const allAdvertisements =
+      getAllAds();
+
+    const usersRows =
+      users.length
+        ? users.map(function(user) {
+
+            const userAdsCount =
+              userAds.filter(function(ad) {
+                return ad.ownerLogin === user.login;
+              }).length;
+
+            return `
+              <tr>
+
+                <td>
+                  ${escapeUserText(user.name)}
+                </td>
+
+                <td>
+                  @${escapeUserText(user.login)}
+                </td>
+
+                <td>
+                  ${escapeUserText(
+                    user.registeredAt || "Не указано"
+                  )}
+                </td>
+
+                <td>
+                  ${userAdsCount}
+                </td>
+
+              </tr>
+            `;
+          }).join("")
+        : `
+          <tr>
+            <td colspan="4">
+              Зарегистрированных пользователей пока нет.
+            </td>
+          </tr>
+        `;
+
+    const advertisementsRows =
+      userAds.length
+        ? userAds.map(function(ad) {
+            return `
+              <tr>
+
+                <td>
+                  <strong>
+                    ${escapeUserText(ad.title)}
+                  </strong>
+                </td>
+
+                <td>
+                  ${escapeUserText(
+                    ad.ownerName || ad.seller || "Неизвестно"
+                  )}
+
+                  <br>
+
+                  <small>
+                    @${escapeUserText(
+                      ad.ownerLogin || "не указан"
+                    )}
+                  </small>
+                </td>
+
+                <td>
+                  ${formatPrice(ad.price)}
+                </td>
+
+                <td>
+                  ${escapeUserText(ad.city)}
+                </td>
+
+                <td>
+
+                  <button
+                    class="admin-open"
+                    onclick="openPage('details', ${ad.id})"
+                  >
+                    Открыть
+                  </button>
+
+                  <button
+                    class="admin-delete"
+                    onclick="adminDeleteAdvertisement(${ad.id})"
+                  >
+                    Удалить
+                  </button>
+
+                </td>
+
+              </tr>
+            `;
+          }).join("")
+        : `
+          <tr>
+            <td colspan="5">
+              Пользователи пока не добавили объявления.
+            </td>
+          </tr>
+        `;
+
+    app.innerHTML = `
+      <section class="page-title-section">
+
+        <div class="container">
+
+          <h1 class="page-title">
+            Админ-панель
+          </h1>
+
+          <p>
+            Управление пользователями и объявлениями
+          </p>
+
+        </div>
+
+      </section>
+
+      <section class="section">
+
+        <div class="container">
+
+          <div class="admin-statistics">
+
+            <div class="admin-stat">
+
+              <strong>
+                ${users.length}
+              </strong>
+
+              <span>
+                Зарегистрированных пользователей
+              </span>
+
+            </div>
+
+            <div class="admin-stat">
+
+              <strong>
+                ${userAds.length}
+              </strong>
+
+              <span>
+                Объявлений пользователей
+              </span>
+
+            </div>
+
+            <div class="admin-stat">
+
+              <strong>
+                ${allAdvertisements.length}
+              </strong>
+
+              <span>
+                Всего объявлений
+              </span>
+
+            </div>
+
+          </div>
+
+          <h2>
+            Зарегистрированные пользователи
+          </h2>
+
+          <div class="admin-table-wrapper">
+
+            <table class="admin-table">
+
+              <thead>
+
+                <tr>
+                  <th>Имя</th>
+                  <th>Логин</th>
+                  <th>Дата регистрации</th>
+                  <th>Объявлений</th>
+                </tr>
+
+              </thead>
+
+              <tbody>
+                ${usersRows}
+              </tbody>
+
+            </table>
+
+          </div>
+
+          <h2>
+            Объявления пользователей
+          </h2>
+
+          <div class="admin-table-wrapper">
+
+            <table class="admin-table">
+
+              <thead>
+
+                <tr>
+                  <th>Объявление</th>
+                  <th>Автор</th>
+                  <th>Цена</th>
+                  <th>Город</th>
+                  <th>Управление</th>
+                </tr>
+
+              </thead>
+
+              <tbody>
+                ${advertisementsRows}
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+      </section>
+    `;
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
+
+  /*
+    Администратор удаляет объявление
+  */
+  function adminDeleteAdvertisement(id) {
+    if (
+      !currentSiteUser ||
+      currentSiteUser.role !== "admin"
+    ) {
+      return;
+    }
+
+    const result =
+      confirm("Удалить это объявление?");
+
+    if (!result) {
+      return;
+    }
+
+    const advertisements =
+      getCustomAds().filter(function(ad) {
+        return ad.id !== Number(id);
+      });
+
+    localStorage.setItem(
+      "customAds",
+      JSON.stringify(advertisements)
+    );
+
+    showToast("Объявление удалено");
+
+    showAdminPanel();
+  }
+
+  /*
+    Защита текста, введённого пользователями
+  */
+  function escapeUserText(text) {
+    return String(text || "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  /*
+    Проверяем, был ли пользователь уже авторизован
+  */
+  if (currentSiteUser) {
+
+    document
+      .getElementById("loginOverlay")
+      .classList.add("hidden");
+
+    updateSiteHeader();
+
+    if (currentSiteUser.role === "admin") {
+      showAdminPanel();
+    } else {
+      showHome();
+    }
+
+  } else {
+
+    document
+      .getElementById("loginOverlay")
+      .classList.remove("hidden");
+
+  }
+</script>
